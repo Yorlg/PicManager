@@ -142,7 +142,6 @@ onBeforeUnmount(() => {
               <el-button
                 class="w-full mt-4"
                 size="default"
-                type="primary"
                 :loading="loading"
                 @click="onLogin(ruleFormRef)"
               >
