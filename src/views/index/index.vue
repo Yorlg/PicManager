@@ -116,7 +116,7 @@ function triggerFileInputs() {
             @mouseleave="show = false"
           >
             <div
-              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[300px] space-y-4 text-gray-500 cursor-pointer"
+              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[300px] text-gray-500 cursor-pointer"
             >
               <IconifyIconOnline
                 v-if="show"
