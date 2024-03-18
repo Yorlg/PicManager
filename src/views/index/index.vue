@@ -10,6 +10,17 @@ defineOptions({
 const router = useRouter();
 const { dataTheme, dataThemeChange } = useDataThemeChange();
 const drawer = ref(false);
+
+const fileInput = ref(null);
+function triggerFileInput() {
+  fileInput.value.click(); // 触发input的click事件
+}
+
+function handleFileChange(event) {
+  // 处理文件变更逻辑
+  const files = event.target.files;
+  console.log(files);
+}
 </script>
 
 <template>
@@ -61,12 +72,22 @@ const drawer = ref(false);
       <div
         class="h-full flex mx-auto container px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60"
       >
+        <input
+          id="picker"
+          ref="fileInput"
+          type="file"
+          name="file"
+          class="hidden"
+          accept=".jpeg,.jpg,.png,.gif,.tif,.bmp,.ico,.psd,.webp"
+          multiple
+          @change="handleFileChange"
+        />
         <div
           class="p-4 bg-white rounded-md shadow-custom w-full"
           style="margin-bottom: 20px"
         >
           <h1
-            class="tracking-wider text-2xl text-gray-700 mb-2"
+            class="tracking-wider text-2xl text-gray-700 mb-2 animate__bounceIn"
             style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%)"
           >
             Image Upload
@@ -77,6 +98,7 @@ const drawer = ref(false);
           <div
             id="picker-dnd"
             class="mt-3 rounded-md border-2 border-dotted border-stone-300"
+            @click="triggerFileInput"
           >
             <div
               class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[340px] space-y-4 text-gray-500 cursor-pointer"
