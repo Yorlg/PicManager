@@ -68,6 +68,7 @@ function handleFileChange(event) {
       :close-on-click-modal="true"
       :with-header="false"
       size="70%"
+      class="remove-scrollbar"
     >
       <div
         class="h-full flex mx-auto container px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60"
@@ -101,7 +102,7 @@ function handleFileChange(event) {
             @click="triggerFileInput"
           >
             <div
-              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[340px] space-y-4 text-gray-500 cursor-pointer"
+              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[320px] space-y-4 text-gray-500 cursor-pointer"
             >
               <i
                 class="fas fa-times absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center group-hover:block text-gray-400 hover:text-gray-500"
@@ -127,8 +128,13 @@ function handleFileChange(event) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 @import url("@/style/css2.css");
+
+:deep(.el-drawer__body) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 body {
   font-family: Inter, sans-serif;
