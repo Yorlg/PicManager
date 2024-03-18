@@ -121,7 +121,9 @@ function triggerFileInputs() {
               <IconifyIconOnline
                 v-if="show"
                 icon="typcn:times"
-                class="absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center"
+                width="32px"
+                height="32px"
+                class="absolute top-1 right-1 flex justify-center items-center cursor-pointer text-xl text-center"
                 style="color: #9baaa1"
                 @click.stop="triggerFileInputs"
               />
