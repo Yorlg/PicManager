@@ -7,11 +7,13 @@ import { ref } from "vue";
 defineOptions({
   name: "PureIndex"
 });
+const show = ref(false);
 const router = useRouter();
 const { dataTheme, dataThemeChange } = useDataThemeChange();
-const drawer = ref(false);
 
+const drawer = ref(false);
 const fileInput = ref(null);
+
 function triggerFileInput() {
   fileInput.value.click(); // 触发input的click事件
 }
@@ -20,6 +22,14 @@ function handleFileChange(event) {
   // 处理文件变更逻辑
   const files = event.target.files;
   console.log(files);
+}
+function handleDrop(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  console.log(file);
+}
+function triggerFileInputs() {
+  console.log("上传全部");
 }
 </script>
 
@@ -100,12 +110,20 @@ function handleFileChange(event) {
             id="picker-dnd"
             class="mt-3 rounded-md border-2 border-dotted border-stone-300"
             @click="triggerFileInput"
+            @dragover.prevent
+            @drop="handleDrop"
+            @mouseenter="show = true"
+            @mouseleave="show = false"
           >
             <div
-              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[320px] space-y-4 text-gray-500 cursor-pointer"
+              class="relative group flex flex-col justify-center items-center p-2 min-h-[150px] sm:min-h-[300px] space-y-4 text-gray-500 cursor-pointer"
             >
-              <i
-                class="fas fa-times absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center group-hover:block text-gray-400 hover:text-gray-500"
+              <IconifyIconOnline
+                v-if="show"
+                icon="typcn:times"
+                class="absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center"
+                style="color: #9baaa1"
+                @click.stop="triggerFileInputs"
               />
               <p id="upload-all" title="点我上传全部">
                 <!-- 图标 -->
@@ -114,13 +132,13 @@ function handleFileChange(event) {
                   width="70px"
                   height="70px"
                   style="color: #52ffbd"
+                  @click.stop="triggerFileInputs"
                 />
               </p>
               <p class="text-md text-center">
                 拖拽文件到这里，支持多文件同时上传<br />点击上面的图标上传全部已选择文件
               </p>
             </div>
-            <div id="upload-preview" class="flex m-2" style="display: block" />
           </div>
         </div>
       </div>
