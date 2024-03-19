@@ -1,5 +1,3 @@
-import { message } from "@/utils/message";
-
 // 如果您不习惯tsx写法，可以传slot，然后在template里写
 // 需是hooks写法（函数中有return），避免失去响应性
 export function useColumns() {
@@ -15,7 +13,7 @@ export function useColumns() {
       width: 240,
       cellRenderer: ({ row }) => (
         <div style="display: flex; align-items: start">
-          <span>{row.fileName}</span>
+          <span title={row.fileName}>{row.fileName}</span>
         </div>
       )
     },
@@ -35,25 +33,10 @@ export function useColumns() {
     },
     {
       label: "操作",
-      width: 90,
-      cellRenderer: ({ index, row }) => (
-        <>
-          <el-button
-            size="small"
-            type="danger"
-            onClick={() => handleDelete(index + 1, row)}
-          >
-            Delete
-          </el-button>
-        </>
-      )
+      slot: "action",
+      width: 90
     }
   ];
-
-  const handleDelete = (index: number, row) => {
-    message(`您删除了第 ${index} 行，数据为：${JSON.stringify(row)}`);
-  };
-
   return {
     columns
   };

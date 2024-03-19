@@ -3,10 +3,12 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { reactive, ref } from "vue";
 import { message } from "@/utils/message";
 import { useColumns } from "./columns";
 import CryptoJS from "crypto-js";
+import Delete from "@iconify-icons/ep/delete";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 const { columns } = useColumns();
 defineOptions({
@@ -76,8 +78,9 @@ async function processFiles(files) {
     try {
       const base64 = await readFileAsBase64(file);
       addToTableData(file, base64);
-    } catch (error) {
-      message(`读取文件${file.name}时发生错误: ${error.message}`, {
+    } catch ({ error, fileName }) {
+      // 从reject中解构error和fileName
+      message(`读取文件${fileName}时发生错误: ${error.message}`, {
         type: "error"
       });
     }
@@ -105,7 +108,7 @@ function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
+    reader.onerror = () => reject({ error: reader.error, fileName: file.name }); // 将错误和文件名一起传递
     reader.readAsDataURL(file);
   });
 }
@@ -118,7 +121,16 @@ function addToTableData(file, base64) {
     md5: CryptoJS.MD5(base64).toString()
   });
 }
-
+// 删除
+function handleDelete(row) {
+  // 获取 row的md5
+  const md5 = row.md5;
+  // 从tableData中删除
+  tableData.splice(
+    tableData.findIndex(v => v.md5 === md5),
+    1
+  );
+}
 function triggerFileInputs() {
   console.log("上传全部");
 }
@@ -238,6 +250,7 @@ function triggerFileInputs() {
             v-show="tableData.length > 0"
             v-el-table-infinite-scroll="load"
             :infinite-scroll-disabled="isBottom"
+            table-layout="auto"
             class="mt-4"
             :data="tableData"
             :columns="columns"
@@ -253,6 +266,17 @@ function triggerFileInputs() {
                 fit="cover"
                 class="w-[80px] h-[80px] rounded"
               />
+            </template>
+            <template #action="{ row }">
+              <el-button
+                class="reset-margin"
+                link
+                type="primary"
+                :icon="useRenderIcon(Delete)"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
             </template>
           </pure-table>
         </div>
