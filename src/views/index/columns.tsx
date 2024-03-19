@@ -6,14 +6,16 @@ export function useColumns() {
   const columns: TableColumnList = [
     {
       label: "预览",
-      slot: "image"
+      slot: "image",
+      width: 120
     },
     {
       label: "图片名称",
       prop: "fileName",
+      width: 240,
       cellRenderer: ({ row }) => (
-        <div style="display: flex; align-items: center">
-          <span style="margin-left: 10px">{row.fileName}</span>
+        <div style="display: flex; align-items: start">
+          <span>{row.fileName}</span>
         </div>
       )
     },
@@ -28,13 +30,8 @@ export function useColumns() {
       )
     },
     {
-      label: "md5值",
-      prop: "md5",
-      cellRenderer: ({ row }) => (
-        <div style="display: flex; align-items: center">
-          <span>{row.md5}</span>
-        </div>
-      )
+      label: "MD5",
+      prop: "md5"
     },
     {
       label: "操作",

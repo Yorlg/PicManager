@@ -3,8 +3,10 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import { message } from "@/utils/message";
 import { useColumns } from "./columns";
+import CryptoJS from "crypto-js";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 const { columns } = useColumns();
 defineOptions({
@@ -12,13 +14,7 @@ defineOptions({
 });
 
 // 表格无限滚动
-const tableData = new Array(20).fill({
-  image: "https://w.wallhaven.cc/full/we/wallhaven-werowr.png",
-  fileName: "假装是一张.png",
-  fileSize: "1.00 MB",
-  md5: "1f12fe2eb3a76358e1b47a2f4edc1862"
-});
-
+const tableData = reactive([]);
 const data = ref([]);
 const page = ref(0);
 const total = ref(10);
@@ -45,23 +41,88 @@ const { dataTheme, dataThemeChange } = useDataThemeChange();
 const drawer = ref(false);
 const fileInput = ref(null);
 
+// 图片上传逻辑 - start
+// 临时定义规则
+const fileRule = [
+  "jpeg",
+  "jpg",
+  "png",
+  "gif",
+  "tif",
+  "bmp",
+  "ico",
+  "psd",
+  "webp"
+];
+
 function triggerFileInput() {
   fileInput.value.click(); // 触发input的click事件
 }
 
-function handleFileChange(event) {
-  // 处理文件变更逻辑
-  const files = event.target.files;
-  console.log(files);
-}
 function handleDrop(event) {
   event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  console.log(file);
+  processFiles(event.dataTransfer.files);
 }
+
+function handleFileChange(event) {
+  processFiles(event.target.files);
+}
+
+async function processFiles(files) {
+  const validFiles = Array.from(files).filter(
+    file => isValidFileType(file) && isValidFileSize(file)
+  );
+  for (const file of validFiles) {
+    try {
+      const base64 = await readFileAsBase64(file);
+      addToTableData(file, base64);
+    } catch (error) {
+      message(`读取文件${file.name}时发生错误: ${error.message}`, {
+        type: "error"
+      });
+    }
+  }
+}
+
+function isValidFileType(file) {
+  const fileType = file.name.split(".").pop().toLowerCase();
+  if (!fileRule.includes(fileType)) {
+    message(`${file.name}, 文件类型错误`, { type: "error" });
+    return false;
+  }
+  return true;
+}
+
+function isValidFileSize(file) {
+  if (file.size > 5 * 1024 * 1024) {
+    message(`${file.name}, 文件大小超出限制`, { type: "error" });
+    return false;
+  }
+  return true;
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function addToTableData(file, base64) {
+  tableData.push({
+    image: base64,
+    fileName: file.name,
+    fileSize: (file.size / 1024 / 1024).toFixed(2) + " MB",
+    md5: CryptoJS.MD5(base64).toString()
+  });
+}
+
 function triggerFileInputs() {
   console.log("上传全部");
 }
+// 图片上传逻辑 - end
 </script>
 
 <template>
@@ -174,10 +235,10 @@ function triggerFileInputs() {
             </div>
           </div>
           <pure-table
+            v-show="tableData.length > 0"
             v-el-table-infinite-scroll="load"
             :infinite-scroll-disabled="isBottom"
             class="mt-4"
-            :show-header="false"
             :data="tableData"
             :columns="columns"
             max-height="400"
