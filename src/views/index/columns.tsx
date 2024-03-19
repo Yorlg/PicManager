@@ -29,7 +29,17 @@ export function useColumns() {
     },
     {
       label: "MD5",
-      prop: "md5"
+      prop: "md5",
+      cellRenderer: ({ row }) => (
+        <div style="display: flex; align-items: center">
+          <span
+            title={row.md5}
+            class="inline-block overflow-hidden text-ellipsis whitespace-nowrap custom-ellipsis"
+          >
+            {row.md5}
+          </span>
+        </div>
+      )
     },
     {
       label: "操作",
