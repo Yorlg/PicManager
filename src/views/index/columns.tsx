@@ -42,6 +42,11 @@ export function useColumns() {
       )
     },
     {
+      label: "状态",
+      slot: "status",
+      width: 90
+    },
+    {
       label: "操作",
       slot: "action",
       width: 90

@@ -9,6 +9,7 @@ import { message } from "@/utils/message";
 import { useColumns } from "./columns";
 import CryptoJS from "crypto-js";
 import Delete from "@iconify-icons/ep/delete";
+import Upload from "@iconify-icons/ep/upload";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 const { columns } = useColumns();
 defineOptions({
@@ -135,6 +136,11 @@ function triggerFileInputs() {
   console.log("上传全部");
 }
 // 图片上传逻辑 - end
+
+// 清空 tableData
+function removeAll() {
+  tableData.splice(0, tableData.length);
+}
 </script>
 
 <template>
@@ -229,7 +235,7 @@ function triggerFileInputs() {
                 height="32px"
                 class="absolute top-1 right-1 flex justify-center items-center cursor-pointer text-xl text-center"
                 style="color: #9baaa1"
-                @click.stop="triggerFileInputs"
+                @click.stop="removeAll"
               />
               <p id="upload-all" title="点我上传全部">
                 <!-- 图标 -->
@@ -267,16 +273,37 @@ function triggerFileInputs() {
                 class="w-[80px] h-[80px] rounded"
               />
             </template>
-            <template #action="{ row }">
-              <el-button
-                class="reset-margin"
-                link
+            <template #status>
+              <el-tag
                 type="primary"
-                :icon="useRenderIcon(Delete)"
-                @click="handleDelete(row)"
+                :closable="false"
+                size="large"
+                disabled="disabled"
               >
-                删除
-              </el-button>
+                待上传
+              </el-tag>
+            </template>
+            <template #action="{ row }">
+              <div class="flex flex-col items-center justify-center space-y-1">
+                <el-button
+                  class="reset-margin"
+                  link
+                  type="primary"
+                  :icon="useRenderIcon(Upload)"
+                  @click="handleDelete(row)"
+                >
+                  上传
+                </el-button>
+                <el-button
+                  class="reset-margin"
+                  link
+                  type="primary"
+                  :icon="useRenderIcon(Delete)"
+                  @click="handleDelete(row)"
+                >
+                  删除
+                </el-button>
+              </div>
             </template>
           </pure-table>
         </div>
