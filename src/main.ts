@@ -3,13 +3,13 @@ import router from "./router";
 import { setupStore } from "@/store";
 import { getPlatformConfig } from "./config";
 import { MotionPlugin } from "@vueuse/motion";
-// import { useEcharts } from "@/plugins/echarts";
+import { useEcharts } from "@/plugins/echarts";
 import { createApp, type Directive } from "vue";
 import { useElementPlus } from "@/plugins/elementPlus";
 import { injectResponsiveStorage } from "@/utils/responsive";
-
+import ElTableInfiniteScroll from "el-table-infinite-scroll";
 import Table from "@pureadmin/table";
-// import PureDescriptions from "@pureadmin/descriptions";
+import PureDescriptions from "@pureadmin/descriptions";
 import "animate.css";
 // 引入重置样式
 import "./style/reset.scss";
@@ -23,7 +23,6 @@ import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App);
-
 // 自定义指令
 import * as directives from "@/directives";
 Object.keys(directives).forEach(key => {
@@ -55,8 +54,12 @@ getPlatformConfig(app).then(async config => {
   app.use(router);
   await router.isReady();
   injectResponsiveStorage(app, config);
-  app.use(MotionPlugin).use(useElementPlus).use(Table);
-  // .use(PureDescriptions)
-  // .use(useEcharts);
+  app
+    .use(MotionPlugin)
+    .use(useElementPlus)
+    .use(Table)
+    .use(PureDescriptions)
+    .use(useEcharts)
+    .use(ElTableInfiniteScroll);
   app.mount("#app");
 });

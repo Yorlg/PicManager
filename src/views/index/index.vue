@@ -4,9 +4,40 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { ref } from "vue";
+import { useColumns } from "./columns";
+import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
+const { columns } = useColumns();
 defineOptions({
   name: "PureIndex"
 });
+
+// 表格无限滚动
+const tableData = new Array(20).fill({
+  image: "https://w.wallhaven.cc/full/we/wallhaven-werowr.png",
+  fileName: "假装是一张.png",
+  fileSize: "1.00 MB",
+  md5: "1f12fe2eb3a76358e1b47a2f4edc1862"
+});
+
+const data = ref([]);
+const page = ref(0);
+const total = ref(10);
+const isBottom = ref(false);
+
+const load = () => {
+  if (isBottom.value) return;
+
+  page.value++;
+  if (page.value <= total.value) {
+    data.value = data.value.concat(tableData);
+  }
+
+  if (page.value === total.value) {
+    isBottom.value = true;
+  }
+};
+// end 表格无限滚动
+
 const show = ref(false);
 const router = useRouter();
 const { dataTheme, dataThemeChange } = useDataThemeChange();
@@ -94,11 +125,11 @@ function triggerFileInputs() {
           @change="handleFileChange"
         />
         <div
-          class="p-4 bg-white rounded-md shadow-custom w-full"
+          class="p-4 bg-white rounded-md shadow-custom w-full dark:text-white dark:bg-black/40"
           style="margin-bottom: 20px"
         >
           <h1
-            class="tracking-wider text-2xl text-gray-700 mb-2 animate__bounceIn"
+            class="tracking-wider text-2xl text-gray-700 mb-2 animate__bounceIn dark:text-white"
             style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%)"
           >
             Image Upload
@@ -108,7 +139,7 @@ function triggerFileInputs() {
           </p>
           <div
             id="picker-dnd"
-            class="mt-3 rounded-md border-2 border-dotted border-stone-300"
+            class="mt-3 rounded-md border-2 border-dotted border-stone-300 dark:bg-black/40"
             @click="triggerFileInput"
             @dragover.prevent
             @drop="handleDrop"
@@ -142,6 +173,27 @@ function triggerFileInputs() {
               </p>
             </div>
           </div>
+          <pure-table
+            v-el-table-infinite-scroll="load"
+            :infinite-scroll-disabled="isBottom"
+            class="mt-4"
+            :show-header="false"
+            :data="tableData"
+            :columns="columns"
+            max-height="400"
+          >
+            <template #image="{ row, index }">
+              <el-image
+                preview-teleported
+                loading="lazy"
+                :src="row.image"
+                :preview-src-list="tableData.map(v => v.image)"
+                :initial-index="index"
+                fit="cover"
+                class="w-[80px] h-[80px] rounded"
+              />
+            </template>
+          </pure-table>
         </div>
       </div>
     </el-drawer>

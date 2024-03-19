@@ -32,6 +32,9 @@ dependencies:
   echarts:
     specifier: ^5.5.0
     version: 5.5.0
+  el-table-infinite-scroll:
+    specifier: ^3.0.3
+    version: 3.0.3(typescript@5.3.3)
   element-plus:
     specifier: ^2.6.0
     version: 2.6.0(vue@3.4.21)
@@ -2359,6 +2362,11 @@ packages:
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
+  /core-js@3.36.1:
+    resolution: {integrity: sha512-BTvUrwxVBezj5SZ3f10ImnX2oRByMxql3EimVqMysepbC9EeMUOpLwdy6Eoili2x6E4kf+ZUB5k/+Jv55alPfA==}
+    requiresBuild: true
+    dev: false
+
   /cosmiconfig-typescript-loader@5.0.0(@types/node@20.11.24)(cosmiconfig@8.3.6)(typescript@5.3.3):
     resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
     engines: {node: '>=v16'}
@@ -2806,6 +2814,17 @@ packages:
     dependencies:
       tslib: 2.3.0
       zrender: 5.5.0
+    dev: false
+
+  /el-table-infinite-scroll@3.0.3(typescript@5.3.3):
+    resolution: {integrity: sha512-cmMHg4MxrNOV2dFziV3ISRo+rM/3tAH8TE3wWMGKd4ucjvk21Bfb6MJfPuNAicLOkq4fYZm+J+mr0NmDPnvolQ==}
+    dependencies:
+      core-js: 3.36.1
+      element-plus: 2.6.0(vue@3.4.21)
+      vue: 3.4.21(typescript@5.3.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - typescript
     dev: false
 
   /electron-to-chromium@1.4.699:
