@@ -48,8 +48,8 @@ export function useColumns() {
     },
     {
       label: "操作",
-      slot: "action",
-      width: 90
+      slot: "operation",
+      width: 120
     }
   ];
   return {

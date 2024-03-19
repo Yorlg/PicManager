@@ -270,6 +270,7 @@ function removeAll() {
                 :preview-src-list="tableData.map(v => v.image)"
                 :initial-index="index"
                 fit="cover"
+                max-height="420px"
                 class="w-[80px] h-[80px] rounded"
               />
             </template>
@@ -283,10 +284,9 @@ function removeAll() {
                 待上传
               </el-tag>
             </template>
-            <template #action="{ row }">
+            <template #operation="{ row }">
               <div class="flex flex-col items-center justify-center space-y-1">
                 <el-button
-                  class="reset-margin"
                   link
                   type="primary"
                   :icon="useRenderIcon(Upload)"
@@ -295,9 +295,9 @@ function removeAll() {
                   上传
                 </el-button>
                 <el-button
-                  class="reset-margin"
                   link
                   type="primary"
+                  style="margin: 0"
                   :icon="useRenderIcon(Delete)"
                   @click="handleDelete(row)"
                 >
