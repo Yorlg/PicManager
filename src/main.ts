@@ -10,7 +10,6 @@ import { injectResponsiveStorage } from "@/utils/responsive";
 import ElTableInfiniteScroll from "el-table-infinite-scroll";
 import Table from "@pureadmin/table";
 import PureDescriptions from "@pureadmin/descriptions";
-import { inject } from "@vercel/analytics";
 import "animate.css";
 // 引入重置样式
 import "./style/reset.scss";
@@ -29,7 +28,6 @@ import * as directives from "@/directives";
 Object.keys(directives).forEach(key => {
   app.directive(key, (directives as { [key: string]: Directive })[key]);
 });
-inject();
 // 全局注册@iconify/vue图标库
 import {
   IconifyIconOffline,
