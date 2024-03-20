@@ -4,6 +4,7 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
+import { ElMessageBox } from "element-plus";
 import { reactive, ref } from "vue";
 import { message } from "@/utils/message";
 import { useColumns } from "./columns";
@@ -183,6 +184,17 @@ function getTagType(status) {
       return "info"; // 默认不设置类型，使用默认颜色
   }
 }
+const handleClose = async (done: () => void) => {
+  if (tableData.length > 0) {
+    try {
+      await ElMessageBox.confirm("是否清空上传列表?");
+      removeAll();
+    } catch {
+      // 用户取消或关闭对话框，不执行操作
+    }
+  }
+  done();
+};
 </script>
 
 <template>
@@ -231,6 +243,7 @@ function getTagType(status) {
       :with-header="false"
       size="70%"
       class="remove-scrollbar"
+      :before-close="handleClose"
     >
       <div
         class="h-full flex mx-auto container px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60"
