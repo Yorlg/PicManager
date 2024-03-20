@@ -233,7 +233,7 @@ function handleView(row) {
   <div
     class="relative flex flex-col h-[100vh] items-center justify-center bg-white dark:bg-black transition-bg"
   >
-    <div class="absolute top-0 right-0 m-4 z-10">
+    <div class="absolute top-0 right-0 m-4 z-10 dark:bg-black/40">
       <button
         class="px-3 py-1 border border-stone-200 rounded-lg drop-shadow-sm text-sm text-stone-800 dark:text-white bg-white/80 dark:bg-black/40 backdrop-blur-lg hover:border-stone-300 transition-colors dark:border-stone-500 dark:hover:border-stone-400"
         @click="handleLogin"

@@ -27,35 +27,35 @@ function setHoverState(index, state) {
 }
 const items = ref([
   {
-    name: "url",
+    name: "图片链接",
     content: "http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif",
     state: false
   },
   {
-    name: "html",
+    name: "Html元素",
     content:
       '<img src="http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif" alt="medium.gif" title="medium.gif"/>',
     state: false
   },
   {
-    name: "markdown",
+    name: "Markdown",
     content:
       "![medium.gif](http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif)",
     state: false
   },
   {
-    name: "BBCode",
+    name: "BBCode论坛",
     content:
       "[img]http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif[/img]",
     state: false
   },
   {
-    name: "thumbnail",
+    name: "Thumbnail缩略图",
     content:
       "http://100.109.89.30:8089/thumbnails/726bfe9bde28a7bc94f854d3349ac488.png",
     state: false
   },
-  { label: "DelUrl", name: "delUrl", content: "http://del-url", state: false }
+  { name: "删除地址", content: "http://del-url", state: false }
 ]);
 </script>
 
@@ -64,19 +64,22 @@ const items = ref([
     <div
       v-for="(item, index) in items"
       :key="index"
-      class="dark:text-white dark:bg-black/40"
+      class="dark:text-white dark:bg-black/40 space-y-2"
     >
-      <span class="font-semibold text-xl">{{ item.name }}</span>
-      <div class="relative w-full mt-2">
+      <!-- 适应小屏幕尺寸的文字大小 -->
+      <span class="font-semibold text-lg sm:text-xl">{{ item.name }}</span>
+      <div class="relative w-full mt-2 dark:bg-black/40">
         <p
-          class="text-lg leading-relaxed whitespace-nowrap select-all mb-2 bg-gray-50 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
+          class="dark:bg-black/80 dark:text-white scrollable-p text-base sm:text-lg leading-relaxed whitespace-normal sm:whitespace-nowrap select-all mb-2 bg-gray-100 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
         >
           {{ item.content }}
         </p>
         <IconifyIconOnline
           icon="ep:document-copy"
-          width="32px"
-          height="32px"
+          width="24px"
+          height="24px"
+          sm:width="32px"
+          sm:height="32px"
           class="absolute top-1 right-1 flex justify-center items-center cursor-pointer text-xl text-center"
           :style="{ color: items[index].state ? '#55EA8B' : '#a1d3b3' }"
           @mouseenter="setHoverState(index, true)"
@@ -87,3 +90,16 @@ const items = ref([
     </div>
   </div>
 </template>
+
+<style scoped>
+.scrollable-p {
+  overflow-x: auto; /* 启用横向滚动 */
+  white-space: nowrap; /* 确保内容不会折行 */
+  -ms-overflow-style: none; /* IE 和 Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollable-p::-webkit-scrollbar {
+  display: none; /* Chrome, Safari 和 Opera */
+}
+</style>
