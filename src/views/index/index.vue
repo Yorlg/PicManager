@@ -78,7 +78,7 @@ async function processFiles(files) {
   for (const file of validFiles) {
     try {
       const base64 = await readFileAsBase64(file);
-      addToTableData(file, base64);
+      addToTableData(file, base64, "上传中");
     } catch ({ error, fileName }) {
       // 从reject中解构error和fileName
       message(`读取文件${fileName}时发生错误: ${error.message}`, {
@@ -114,13 +114,36 @@ function readFileAsBase64(file) {
   });
 }
 
-function addToTableData(file, base64) {
+async function addToTableData(file, base64, uploadStatus) {
+  const fileName = file.name;
+  const fileSize = (file.size / 1024 / 1024).toFixed(2) + " MB";
+  const md5 = await computeMD5(base64); // 假设这个函数异步计算并返回MD5值
+
+  // 检查是否存在具有相同文件名和MD5值的文件
+  const isDuplicate = tableData.some(
+    item => item.fileName === fileName && item.md5 === md5
+  );
+  if (isDuplicate) {
+    console.log(`文件 "${fileName}" (MD5: ${md5}) 已存在，将被忽略。`);
+    return; // 如果存在重复项，则不添加到tableData中，并返回
+  }
+
+  // 直接使用tableData的长度作为index
+  const index = tableData.length;
   tableData.push({
+    index,
     image: base64,
-    fileName: file.name,
-    fileSize: (file.size / 1024 / 1024).toFixed(2) + " MB",
-    md5: CryptoJS.MD5(base64).toString()
+    fileName,
+    fileSize,
+    md5,
+    status: uploadStatus,
+    file
   });
+}
+// 比对 MD5 值
+async function computeMD5(data) {
+  // 这里使用CryptoJS来计算MD5，具体实现依赖于你的环境
+  return CryptoJS.MD5(data).toString();
 }
 // 删除
 function handleDelete(row) {
@@ -135,11 +158,30 @@ function handleDelete(row) {
 function triggerFileInputs() {
   console.log("上传全部");
 }
+
+function handUpload(row) {
+  // 根据 index 修改状态
+  tableData[row.index].status = "成功";
+}
 // 图片上传逻辑 - end
 
 // 清空 tableData
 function removeAll() {
   tableData.splice(0, tableData.length);
+}
+// 获取标签类型
+function getTagType(status) {
+  console.log(status);
+  switch (status) {
+    case "上传中":
+      return "primary"; // 蓝色
+    case "成功":
+      return "success"; // 绿色
+    case "失败":
+      return "danger"; // 红色
+    default:
+      return "info"; // 默认不设置类型，使用默认颜色
+  }
 }
 </script>
 
@@ -274,14 +316,14 @@ function removeAll() {
                 class="w-[80px] h-[80px] rounded"
               />
             </template>
-            <template #status>
+            <template #status="{ row }">
               <el-tag
-                type="primary"
+                :type="getTagType(row.status)"
                 :closable="false"
                 size="large"
                 disabled="disabled"
               >
-                待上传
+                {{ row.status }}
               </el-tag>
             </template>
             <template #operation="{ row }">
@@ -290,7 +332,8 @@ function removeAll() {
                   link
                   type="primary"
                   :icon="useRenderIcon(Upload)"
-                  @click="handleDelete(row)"
+                  :="row.status === '成功' && { disabled: true }"
+                  @click="handUpload(row)"
                 >
                   上传
                 </el-button>
