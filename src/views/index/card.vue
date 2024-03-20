@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Select } from "@element-plus/icons-vue";
-import type { TabsPaneContext } from "element-plus";
+import { useClipboard } from "@/layout/hooks/useClipboard";
+import { message } from "@/utils/message";
 
 // 声明 props 类型
 export interface CardProps {
@@ -10,18 +10,17 @@ export interface CardProps {
     region: string;
   };
 }
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
 const props = withDefaults(defineProps<CardProps>(), {
   cardInline: () => ({ user: "", region: "" })
 });
 
 const newCardInline = ref(props.cardInline);
+const { copyTextToClipboard } = useClipboard();
+const copyContent = (content: string) => {
+  copyTextToClipboard(content);
+  message("复制成功", { type: "success" });
+};
 
-function handleTabsEdit() {
-  alert("复制全部内容");
-}
 const tabs = ref([
   {
     label: "URL",
@@ -57,18 +56,28 @@ const tabs = ref([
 </script>
 
 <template>
-  <el-tabs :model="tabs" model-value="url" class="demo-tabs">
+  <el-tabs :model="tabs" model-value="url">
     <el-tab-pane
       v-for="tab in tabs"
       :key="tab.name"
       :label="tab.label"
       :name="tab.name"
-      ><div class="flex h-10 items-center space-y-2">
-        <p
-          class="w-full text-lg leading-relaxed whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
-        >
-          {{ tab.content }}
-        </p>
+      ><div class="relative flex h-10 items-center space-y-2">
+        <div class="relative w-full">
+          <p
+            class="text-lg leading-relaxed whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
+          >
+            {{ tab.content }}
+          </p>
+          <IconifyIconOnline
+            icon="ep:document-copy"
+            width="32px"
+            height="32px"
+            class="absolute top-1 right-1 flex justify-center items-center cursor-pointer text-xl text-center"
+            style="color: #a1d3b3"
+            @click="copyContent(tab.content)"
+          />
+        </div>
       </div>
     </el-tab-pane>
   </el-tabs>
