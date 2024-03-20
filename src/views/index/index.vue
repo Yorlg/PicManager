@@ -217,7 +217,7 @@ function handleView(row) {
     draggable: true,
     showClose: false,
     hideFooter: true,
-    top: "30vh",
+    top: "10vh",
     contentRenderer: () => cards,
     props: {
       cardInline: {
