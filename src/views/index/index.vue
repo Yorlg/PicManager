@@ -217,11 +217,12 @@ function handleView(row) {
     draggable: true,
     showClose: false,
     hideFooter: true,
+    top: "30vh",
     contentRenderer: () => cards,
     props: {
       cardInline: {
-        user: "菜虚鲲",
-        region: "浙江"
+        user: "测试",
+        region: "测试"
       }
     }
   });

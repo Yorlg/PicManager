@@ -63,19 +63,13 @@ const tabs = ref([
       :key="tab.name"
       :label="tab.label"
       :name="tab.name"
-      ><div class="h-20 space-y-2 flex">
+      ><div class="flex h-10 items-center space-y-2">
         <p
-          class="h-full items-center text-lg leading-relaxed whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
+          class="w-full text-lg leading-relaxed whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
         >
           {{ tab.content }}
         </p>
-      </div></el-tab-pane
-    >
+      </div>
+    </el-tab-pane>
   </el-tabs>
 </template>
-
-<style lang="scss" scoped>
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-}
-</style>
