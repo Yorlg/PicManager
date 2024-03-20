@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
@@ -16,6 +16,8 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 import { storageLocal } from "@pureadmin/utils";
 import { type DataInfo, userKey, multipleTabsKey } from "@/utils/auth";
+import cards, { type CardProps } from "./card.vue";
+import { addDialog } from "@/components/ReDialog";
 defineOptions({
   name: "PureIndex"
 });
@@ -165,7 +167,7 @@ function triggerFileInputs() {
   console.log("上传全部");
 }
 
-function handUpload(row) {
+function handleUpload(row) {
   // 根据 index 修改状态
   tableData[row.index].status = "成功";
 }
@@ -201,13 +203,28 @@ const handleClose = async (done: () => void) => {
   done();
 };
 // handLogin 跳转登录页
-function handLogin() {
+function handleLogin() {
   // 如果已经包含token，直接跳转到首页
   if (Cookies.get(multipleTabsKey) && userInfo) {
     router.push("/welcome");
     return;
   }
   router.push("/login");
+}
+// 查看详细信息的弹出框
+function handleView(row) {
+  addDialog({
+    draggable: true,
+    showClose: false,
+    hideFooter: true,
+    contentRenderer: () => cards,
+    props: {
+      cardInline: {
+        user: "菜虚鲲",
+        region: "浙江"
+      }
+    }
+  });
 }
 </script>
 
@@ -218,7 +235,7 @@ function handLogin() {
     <div class="absolute top-0 right-0 m-4 z-10">
       <button
         class="px-3 py-1 border border-stone-200 rounded-lg drop-shadow-sm text-sm text-stone-800 dark:text-white bg-white/80 dark:bg-black/40 backdrop-blur-lg hover:border-stone-300 transition-colors dark:border-stone-500 dark:hover:border-stone-400"
-        @click="handLogin"
+        @click="handleLogin"
       >
         Login
       </button>
@@ -360,6 +377,7 @@ function handLogin() {
                   link
                   type="primary"
                   :icon="useRenderIcon(View)"
+                  @click="handleView(row)"
                 >
                   查看
                 </el-button>
@@ -368,7 +386,7 @@ function handLogin() {
                   link
                   type="primary"
                   :icon="useRenderIcon(Upload)"
-                  @click="handUpload(row)"
+                  @click="handleUpload(row)"
                 >
                   上传
                 </el-button>
