@@ -11,11 +11,9 @@ export interface CardProps {
     region: string;
   };
 }
-const isHovering = ref(true);
 const props = withDefaults(defineProps<CardProps>(), {
   cardInline: () => ({ user: "", region: "" })
 });
-
 const newCardInline = ref(props.cardInline);
 const { copyTextToClipboard } = useClipboard();
 
@@ -24,32 +22,40 @@ const copyContent = (content: string) => {
   message("复制成功", { type: "success" });
 };
 const handleCopyContent = debounce(copyContent, 500, true);
+function setHoverState(index, state) {
+  items.value[index].state = state;
+}
 const items = ref([
   {
     name: "url",
-    content: "http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif"
+    content: "http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif",
+    state: false
   },
   {
     name: "html",
     content:
-      '<img src="http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif" alt="medium.gif" title="medium.gif"/>'
+      '<img src="http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif" alt="medium.gif" title="medium.gif"/>',
+    state: false
   },
   {
     name: "markdown",
     content:
-      "![medium.gif](http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif)"
+      "![medium.gif](http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif)",
+    state: false
   },
   {
     name: "BBCode",
     content:
-      "[img]http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif[/img]"
+      "[img]http://100.109.89.30:8089/i/2024/03/20/65faa14993de4.gif[/img]",
+    state: false
   },
   {
     name: "thumbnail",
     content:
-      "http://100.109.89.30:8089/thumbnails/726bfe9bde28a7bc94f854d3349ac488.png"
+      "http://100.109.89.30:8089/thumbnails/726bfe9bde28a7bc94f854d3349ac488.png",
+    state: false
   },
-  { label: "DelUrl", name: "delUrl", content: "http://del-url" }
+  { label: "DelUrl", name: "delUrl", content: "http://del-url", state: false }
 ]);
 </script>
 
@@ -72,9 +78,9 @@ const items = ref([
           width="32px"
           height="32px"
           class="absolute top-1 right-1 flex justify-center items-center cursor-pointer text-xl text-center"
-          :style="{ color: isHovering ? '#a1d3b3' : '#72D797' }"
-          @mouseenter="isHovering = false"
-          @mouseleave="isHovering = true"
+          :style="{ color: items[index].state ? '#55EA8B' : '#a1d3b3' }"
+          @mouseenter="setHoverState(index, true)"
+          @mouseleave="setHoverState(index, false)"
           @click="handleCopyContent"
         />
       </div>
