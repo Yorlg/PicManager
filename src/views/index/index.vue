@@ -10,6 +10,7 @@ import { useColumns } from "./columns";
 import CryptoJS from "crypto-js";
 import Delete from "@iconify-icons/ep/delete";
 import Upload from "@iconify-icons/ep/upload";
+import View from "@iconify-icons/ep/view";
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
@@ -355,10 +356,18 @@ function handLogin() {
             <template #operation="{ row }">
               <div class="flex flex-col items-center justify-center space-y-1">
                 <el-button
+                  v-if="row.status === '成功'"
+                  link
+                  type="primary"
+                  :icon="useRenderIcon(View)"
+                >
+                  查看
+                </el-button>
+                <el-button
+                  v-else
                   link
                   type="primary"
                   :icon="useRenderIcon(Upload)"
-                  :="row.status === '成功' && { disabled: true }"
                   @click="handUpload(row)"
                 >
                   上传
