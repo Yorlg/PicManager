@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import dayIcon from "@/assets/svg/day.svg?component";
-import darkIcon from "@/assets/svg/dark.svg?component";
+import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
@@ -11,12 +10,17 @@ import { useColumns } from "./columns";
 import CryptoJS from "crypto-js";
 import Delete from "@iconify-icons/ep/delete";
 import Upload from "@iconify-icons/ep/upload";
+import dayIcon from "@/assets/svg/day.svg?component";
+import darkIcon from "@/assets/svg/dark.svg?component";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
-const { columns } = useColumns();
+import { storageLocal } from "@pureadmin/utils";
+import { type DataInfo, userKey, multipleTabsKey } from "@/utils/auth";
 defineOptions({
   name: "PureIndex"
 });
-
+// 登录信息
+const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
+const { columns } = useColumns();
 // 表格无限滚动
 const tableData = reactive([]);
 const data = ref([]);
@@ -195,6 +199,15 @@ const handleClose = async (done: () => void) => {
   }
   done();
 };
+// handLogin 跳转登录页
+function handLogin() {
+  // 如果已经包含token，直接跳转到首页
+  if (Cookies.get(multipleTabsKey) && userInfo) {
+    router.push("/welcome");
+    return;
+  }
+  router.push("/login");
+}
 </script>
 
 <template>
@@ -204,7 +217,7 @@ const handleClose = async (done: () => void) => {
     <div class="absolute top-0 right-0 m-4 z-10">
       <button
         class="px-3 py-1 border border-stone-200 rounded-lg drop-shadow-sm text-sm text-stone-800 dark:text-white bg-white/80 dark:bg-black/40 backdrop-blur-lg hover:border-stone-300 transition-colors dark:border-stone-500 dark:hover:border-stone-400"
-        @click="router.push({ name: 'Login' })"
+        @click="handLogin"
       >
         Login
       </button>
