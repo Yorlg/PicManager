@@ -78,11 +78,8 @@ const items = ref([
 
 <template>
   <div class="dark:text-white dark:bg-black/40 mb-4 relative w-full h-full">
-    <el-dropdown
-      class="hover:text-cyan-300"
-      style=" position: absolute;top: 0; right: 0"
-    >
-      <span> 全部图片 </span>
+    <el-dropdown style="position: absolute; top: 0; right: 0">
+      <span class="text-cyan-700 hover:text-cyan-400">全部图片 </span>
       <template #dropdown>
         <el-dropdown-men v-for="(item, index) in items" :key="index">
           <el-dropdown-item @click="handleCopyAllContent(item.name)">{{
