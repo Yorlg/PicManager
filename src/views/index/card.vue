@@ -7,12 +7,11 @@ import { debounce } from "@pureadmin/utils";
 // 声明 props 类型
 export interface CardProps {
   cardInline: {
-    user: string;
-    region: string;
+    urlList: Array<string>;
   };
 }
 const props = withDefaults(defineProps<CardProps>(), {
-  cardInline: () => ({ user: "", region: "" })
+  cardInline: () => ({ urlList: [] })
 });
 const newCardInline = ref(props.cardInline);
 const { copyTextToClipboard } = useClipboard();
@@ -118,7 +117,7 @@ const items = ref([
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .scrollable-p {
   overflow-x: auto; /* 启用横向滚动 */
   white-space: nowrap; /* 确保内容不会折行 */

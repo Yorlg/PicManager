@@ -221,8 +221,7 @@ function handleView(row) {
     contentRenderer: () => cards,
     props: {
       cardInline: {
-        user: "测试",
-        region: "测试"
+        urlList: [row.image]
       }
     }
   });
