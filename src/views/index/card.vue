@@ -4,16 +4,6 @@ import { useClipboard } from "@/layout/hooks/useClipboard";
 import { message } from "@/utils/message";
 import { debounce } from "@pureadmin/utils";
 
-// 声明 props 类型
-export interface CardProps {
-  cardInline: {
-    urlList: Array<string>;
-  };
-}
-const props = withDefaults(defineProps<CardProps>(), {
-  cardInline: () => ({ urlList: [] })
-});
-const newCardInline = ref(props.cardInline);
 const { copyTextToClipboard } = useClipboard();
 
 const handleCopyContent: any = debounce(
@@ -80,11 +70,11 @@ const items = ref([
     <el-dropdown style="position: absolute; top: 0; right: 0">
       <span class="text-cyan-700 hover:text-cyan-400">全部图片 </span>
       <template #dropdown>
-        <el-dropdown-men v-for="(item, index) in items" :key="index">
+        <el-dropdown-menu v-for="(item, index) in items" :key="index">
           <el-dropdown-item @click="handleCopyAllContent(item.name)">{{
             item.name
           }}</el-dropdown-item>
-        </el-dropdown-men>
+        </el-dropdown-menu>
       </template>
     </el-dropdown>
     <div

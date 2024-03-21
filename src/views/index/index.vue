@@ -16,7 +16,7 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 import { storageLocal } from "@pureadmin/utils";
 import { type DataInfo, userKey, multipleTabsKey } from "@/utils/auth";
-import cards, { type CardProps } from "./card.vue";
+import cards from "./card.vue";
 import { addDialog } from "@/components/ReDialog";
 defineOptions({
   name: "PureIndex"
@@ -217,13 +217,7 @@ function handleView(row) {
     draggable: true,
     showClose: false,
     hideFooter: true,
-    top: "10vh",
-    contentRenderer: () => cards,
-    props: {
-      cardInline: {
-        urlList: [row.image]
-      }
-    }
+    contentRenderer: () => cards
   });
 }
 </script>
