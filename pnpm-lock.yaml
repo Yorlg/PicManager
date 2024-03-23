@@ -39,7 +39,7 @@ dependencies:
     specifier: ^3.0.3
     version: 3.0.3(typescript@5.4.3)
   element-plus:
-    specifier: ^2.6.1
+    specifier: ^2.6.2
     version: 2.6.2(vue@3.4.21)
   js-cookie:
     specifier: ^3.0.5
@@ -227,7 +227,7 @@ devDependencies:
     specifier: ^5.4.3
     version: 5.4.3
   vite:
-    specifier: ^5.2.2
+    specifier: ^5.2.3
     version: 5.2.3(@types/node@20.11.30)(sass@1.72.0)
   vite-plugin-cdn-import:
     specifier: ^0.3.5
