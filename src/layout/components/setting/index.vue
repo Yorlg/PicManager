@@ -354,7 +354,7 @@ onUnmounted(() => removeMatchMedia);
           <div />
         </li>
         <li
-          v-if="device !== 'mobile'"
+          v-if="useAppStoreHook().getViewportWidth > 1280"
           ref="horizontalRef"
           v-tippy="{
             content: '顶部菜单，简洁概览',
@@ -400,7 +400,7 @@ onUnmounted(() => removeMatchMedia);
         <button
           v-else
           v-ripple="{ class: 'text-gray-300' }"
-          class="bg-transparent flex-c w-full h-20 rounded-md border border-gray-100"
+          class="bg-transparent flex-c w-full h-20 rounded-md border border-[var(--pure-border-color)]"
           @click="setStretch(!settings.stretch)"
         >
           <div
