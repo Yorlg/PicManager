@@ -96,7 +96,7 @@ const items = ref([
       <span class="font-medium text-sm sm:text-xl">{{ item.name }}</span>
       <div class="relative w-full mt-2 dark:bg-bg_color">
         <p
-          class="dark:bg-bg_color dark:text-white scrollable-p text-base sm:text-lg leading-relaxed whitespace-normal sm:whitespace-nowrap select-all mb-2 bg-gray-100 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
+          class="dark:bg-bg_color dark:text-white scrollable-p text-base sm:text-lg leading-relaxed whitespace-normal sm:whitespace-nowrap mb-2 bg-gray-100 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
         >
           {{ item.content }}
         </p>
