@@ -4,6 +4,16 @@ import { useClipboard } from "@/layout/hooks/useClipboard";
 import { message } from "@/utils/message";
 import { debounce } from "@pureadmin/utils";
 
+// 声明 props 类型
+export interface CardProps {
+  cardInline: {
+    urlList: Array<string>;
+  };
+}
+const props = withDefaults(defineProps<CardProps>(), {
+  cardInline: () => ({ urlList: [] })
+});
+const newCardInline = ref(props.cardInline);
 const { copyTextToClipboard } = useClipboard();
 
 const handleCopyContent: any = debounce(
@@ -66,27 +76,27 @@ const items = ref([
 </script>
 
 <template>
-  <div class="dark:text-white dark:bg-black/40 mb-4 relative w-full h-full">
+  <div class="dark:text-white dark:bg-bg_color mb-4 relative w-full h-full">
     <el-dropdown style="position: absolute; top: 0; right: 0">
       <span class="text-cyan-700 hover:text-cyan-400">全部图片 </span>
       <template #dropdown>
-        <el-dropdown-menu v-for="(item, index) in items" :key="index">
+        <el-dropdown-men v-for="(item, index) in items" :key="index">
           <el-dropdown-item @click="handleCopyAllContent(item.name)">{{
             item.name
           }}</el-dropdown-item>
-        </el-dropdown-menu>
+        </el-dropdown-men>
       </template>
     </el-dropdown>
     <div
       v-for="(item, index) in items"
       :key="index"
-      class="dark:text-white dark:bg-black/40 space-y-2"
+      class="dark:text-white dark:bg-bg_color space-y-2"
     >
       <!-- 适应小屏幕尺寸的文字大小 -->
       <span class="font-medium text-sm sm:text-xl">{{ item.name }}</span>
-      <div class="relative w-full mt-2 dark:bg-black/40">
+      <div class="relative w-full mt-2 dark:bg-bg_color">
         <p
-          class="dark:bg-black/80 dark:text-white scrollable-p text-base sm:text-lg leading-relaxed whitespace-normal sm:whitespace-nowrap select-all mb-2 bg-gray-100 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
+          class="dark:bg-bg_color dark:text-white scrollable-p text-base sm:text-lg leading-relaxed whitespace-normal sm:whitespace-nowrap select-all mb-2 bg-gray-100 hover:bg-gray-300 text-gray-900 rounded px-2 py-1 cursor-pointer"
         >
           {{ item.content }}
         </p>

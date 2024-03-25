@@ -16,7 +16,7 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
 import { storageLocal } from "@pureadmin/utils";
 import { type DataInfo, userKey, multipleTabsKey } from "@/utils/auth";
-import cards from "./card.vue";
+import cards, { type CardProps } from "./card.vue";
 import { addDialog } from "@/components/ReDialog";
 defineOptions({
   name: "PureIndex"
@@ -217,7 +217,13 @@ function handleView(row) {
     draggable: true,
     showClose: false,
     hideFooter: true,
-    contentRenderer: () => cards
+    top: "10vh",
+    contentRenderer: () => cards,
+    props: {
+      cardInline: {
+        urlList: [row.image]
+      }
+    }
   });
 }
 </script>
@@ -284,7 +290,7 @@ function handleView(row) {
           @change="handleFileChange"
         />
         <div
-          class="p-4 bg-white rounded-md shadow-custom w-full dark:text-white dark:bg-black/40"
+          class="p-4 bg-white rounded-md shadow-custom w-full dark:text-white dark:bg-bg_color"
           style="margin-bottom: 20px"
         >
           <h1
@@ -298,7 +304,7 @@ function handleView(row) {
           </p>
           <div
             id="picker-dnd"
-            class="mt-3 rounded-md border-2 border-dotted border-stone-300 dark:bg-black/40"
+            class="mt-3 rounded-md border-2 border-dotted border-stone-300 dark:bg-bg_color"
             @click="triggerFileInput"
             @dragover.prevent
             @drop="handleDrop"
