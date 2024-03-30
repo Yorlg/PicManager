@@ -13,11 +13,11 @@ import panel from "../panel/index.vue";
 import { emitter } from "@/utils/mitt";
 import { useNav } from "@/layout/hooks/useNav";
 import { useAppStoreHook } from "@/store/modules/app";
-import { useDark, useGlobal, debounce, isNumber } from "@pureadmin/utils";
 import { toggleTheme } from "@pureadmin/theme/dist/browser-utils";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { useDark, useGlobal, debounce, isNumber } from "@pureadmin/utils";
 
 import Check from "@iconify-icons/ep/check";
 import LeftArrow from "@iconify-icons/ri/arrow-left-s-line";
@@ -143,6 +143,7 @@ function setFalse(Doms): any {
     toggleClass(false, "is-select", unref(v));
   });
 }
+
 /** 页宽 */
 const stretchTypeOptions: Array<OptionsType> = [
   {
@@ -156,14 +157,17 @@ const stretchTypeOptions: Array<OptionsType> = [
     value: "custom"
   }
 ];
+
 const setStretch = value => {
   settings.stretch = value;
   storageConfigureChange("stretch", value);
 };
+
 const stretchTypeChange = ({ option }) => {
   const { value } = option;
   value === "custom" ? setStretch(1440) : setStretch(false);
 };
+
 /** 主题色 激活选择项 */
 const getThemeColor = computed(() => {
   return current => {
@@ -182,9 +186,11 @@ const getThemeColor = computed(() => {
     }
   };
 });
+
 const pClass = computed(() => {
   return ["mb-[12px]", "font-medium", "text-sm", "dark:text-white"];
 });
+
 const themeOptions = computed<Array<OptionsType>>(() => {
   return [
     {
@@ -354,7 +360,7 @@ onUnmounted(() => removeMatchMedia);
           <div />
         </li>
         <li
-          v-if="useAppStoreHook().getViewportWidth > 1280"
+          v-if="device !== 'mobile'"
           ref="horizontalRef"
           v-tippy="{
             content: '顶部菜单，简洁概览',
@@ -381,7 +387,7 @@ onUnmounted(() => removeMatchMedia);
         </li>
       </ul>
 
-      <span v-if="device !== 'mobile'">
+      <span v-if="useAppStoreHook().getViewportWidth > 1280">
         <p :class="['mt-5', pClass]">页宽</p>
         <Segmented
           class="mb-2 select-none"
