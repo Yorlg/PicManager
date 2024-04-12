@@ -27,6 +27,7 @@ export default {
     "selector-class-pattern": null,
     "no-descending-specificity": null,
     "scss/dollar-variable-pattern": null,
+    "scss/no-global-function-names": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {
@@ -50,6 +51,7 @@ export default {
           "screen",
           "function",
           "if",
+          "else",
           "each",
           "include",
           "mixin",

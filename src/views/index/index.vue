@@ -217,6 +217,7 @@ function handleView(row) {
     draggable: true,
     showClose: false,
     hideFooter: true,
+    alignCenter: true,
     top: "10vh",
     contentRenderer: () => cards,
     props: {
