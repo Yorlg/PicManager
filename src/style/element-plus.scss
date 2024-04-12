@@ -131,13 +131,13 @@
 
 /* 自定义菜单搜索样式 */
 .pure-search-dialog {
-  @media screen and (width > 760px) and (width <= 940px) {
+  @media screen and (width > 760px) and (width <=940px) {
     .el-input__inner {
       font-size: 12px;
     }
   }
 
-  @media screen and (width <= 470px) {
+  @media screen and (width <=470px) {
     .el-input__inner {
       font-size: 12px;
     }
@@ -164,15 +164,23 @@
 /* 仿 el-scrollbar 滚动条样式，支持大多数浏览器，如Chrome、Edge、Firefox、Safari等。整体暗色风格在 src/style/dark.scss 文件进行了适配 */
 .pure-scrollbar {
   /* Firefox */
-  scrollbar-width: thin; /* 可选值为 'auto', 'thin', 'none' */
-  scrollbar-color: rgb(221 222 224) transparent; /* 滑块颜色、轨道颜色 */
+  scrollbar-width: thin;
+
+  /* 可选值为 'auto', 'thin', 'none' */
+  scrollbar-color: rgb(221 222 224) transparent;
+
+  /* 滑块颜色、轨道颜色 */
   ::-webkit-scrollbar {
-    width: 6px; /* 滚动条宽度 */
+    width: 6px;
+
+    /* 滚动条宽度 */
   }
 
   /* 滚动条轨道 */
   ::-webkit-scrollbar-track {
-    background: transparent; /* 轨道颜色 */
+    background: transparent;
+
+    /* 轨道颜色 */
   }
 
   /* 滚动条滑块 */
@@ -183,6 +191,65 @@
 
   /* 滚动条滑块：hover状态 */
   ::-webkit-scrollbar-thumb:hover {
-    background: rgb(199 201 203); /* 滑块hover颜色 */
+    background: rgb(199 201 203);
+
+    /* 滑块hover颜色 */
+  }
+}
+
+/* 
+
+  使用scss简化媒介查询的封装实现重写
+  element-plus 的 el-* 组件样式  
+
+  使用方式：
+  .el-* {
+    @include respond-to('phone') {
+        width: 100% !important;
+    }
+  }
+
+*/
+$screenSizes: (
+  "xs": (
+    0,
+    480px
+  ),
+  "sm": (
+    481px,
+    768px
+  ),
+  "md": (
+    769px,
+    1024px
+  ),
+  "lg": (
+    1025px,
+    1200px
+  ),
+  "xl": 1201px
+);
+
+@mixin respond-to($sizeName) {
+  $sizeRange: map-get($screenSizes, $sizeName);
+
+  @if type-of($sizeRange) == "list" {
+    @media (min-width: nth($sizeRange, 1)) and (max-width: nth($sizeRange, 2)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $sizeRange) {
+      @content;
+    }
+  }
+}
+
+.el-dialog {
+  @include respond-to("xs") {
+    width: 100% !important;
+  }
+
+  @include respond-to("sm") {
+    width: 80% !important;
   }
 }
